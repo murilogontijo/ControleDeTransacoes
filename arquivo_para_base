@@ -1,0 +1,72 @@
+Estou fazendo um trabalho para simular um banco em linguagem C. Vou colocar o que preciso fazer:
+"Devemos ter os seguintes arquivos:
+cadastro (nome, cpf, data de nascimento)
+conta (cpf, nro da conta e senha)
+movimento(depósitos e saques)
+saldo (com o saldo corrente)
+O programa deverá permitir a realização de saques e depósitos em conta, desde que a senha informada para a conta corrente esteja correta. Se o usuário inserir uma senha errada por 3 vezes, o programa deverá inibir o acesso à conta. Somente o gerente poderá habilitar o acesso. Portanto, simular a existencia de um gerente.
+As consultas possíveis são: extrato da conta e saldo.
+As movimentações possíveis são depósitos e saques.
+Não se altera o saldo diretamente.
+Abertura de conta (registro da conta) iniciará o saldo com um valor 0 ou R$ 100,00. Criar o módulo de registro da conta.
+Senhas deverão ser criptografadas (forma simples). Por exemplo, se a senha for alfabética do tipo abc você poderá transformá-la em hij. Isso inibirá alguém que queira ver o arquivo e utilizar a senha.
+É aconselhável o uso de struct."
+Eu até fiz os dois primeiros arquivos neste código(faltou criptografar a senha):
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+struct cadastro{
+    char nome[15];
+    int cpf,dia,mes,ano;
+};
+struct conta_banco{
+    int nro_conta;
+    char senha[8];
+};
+int main(int argc, char** argv) {
+    /*Criação dos arquivos*/
+    FILE *entrada, *conta;
+    struct cadastro cliente;
+    struct conta_banco dados;
+    srand(time(NULL));
+
+    /*Arquivos onde serão armazenados os dados*/
+    entrada = fopen("cadastro.txt", "w");
+    conta = fopen("conta.txt","w");
+
+    /*Realizar o cadastro do cliente*/
+    printf("Entre com o nome: ");
+    scanf("%s",cliente.nome);
+
+    /*Condição para terminar o cadastro*/
+    while (strcmp(cliente.nome,"FIM")){
+        printf("Entre com o CPF: ");
+        scanf("%d",&cliente.cpf);
+        printf("Entre com o dia de nascimento: ");
+        scanf("%d",&cliente.dia);
+        printf("Entre com o mes de nascimento: ");
+        scanf("%d",&cliente.mes);
+        printf("Entre com o ano de nascimento: ");
+        scanf("%d",&cliente.ano);
+
+        /*Criação de uma conta, feita aleatoriamente*/
+        dados.nro_conta = rand()%100000;
+        printf("Crie uma senha para sua conta: ");
+        scanf("%s",dados.senha);
+
+        /*Gravação de dados nos arquivos cadastro.txt e conta.txt*/
+        fprintf(entrada,"Nome: %s  CPF: %d  Data de Nascimento:%d/ %d/ %d \r\n",cliente.nome,cliente.cpf,cliente.dia,cliente.mes,cliente.ano);
+        fprintf(conta,"CPF: %d  conta: %d  senha: %s\r\n",cliente.cpf,dados.nro_conta,dados.senha);
+
+        /*Realizar um novo cadastro*/
+        printf("Entre com o nome: ");
+        scanf("%s",cliente.nome);
+    }
+
+    /*Fechar os arquivos*/
+    fclose(entrada);
+    fclose(conta);
+return(0);
+}
