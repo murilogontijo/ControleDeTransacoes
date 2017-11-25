@@ -1,6 +1,17 @@
-#include<stdio.h>
+#include <stdio.h>
+#include "main.h"
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
 
-void gerenciarClientes()
+T_Endereco enderecos[5000];
+T_Cliente clientes[5000];
+/** int *teste;
+teste = (int*) malloc(5000*sizeof(int));  **/
+T_Conta contas[5000];
+int totalClientesCadastrados = 0;
+
+void menuClientes()
 {
     char opcaoCliente='X';
     printf("============ Gerenciar Clientes ============\n");
@@ -18,12 +29,12 @@ void gerenciarClientes()
     case 'C':
     case 'c':
         system("cls");
-        printf("Voce chegou na pagina de Cadastro de cliente\n");
+        cadastrarCliente();
         break;
     case 'L':
     case 'l':
         system("cls");
-        printf("Voce chegou na pagina de Lista de clientes\n");
+        listarTodosClientes();
         break;
     case 'B':
     case 'b':
@@ -47,12 +58,12 @@ void gerenciarClientes()
         break;
     default:
         printf("Digite uma opcao valida\n");
-        gerenciarClientes();
+        menuClientes();
     }
     return 0;
 }
 
-void gerenciarContas()
+void menuContas()
 {
     char opcaoContas;
     printf("============== Gerenciar Contas ==============\n");
@@ -77,7 +88,7 @@ void gerenciarContas()
     case 'C':
     case 'c':
         system("cls");
-        printf("Voce chegou na pagina de Cadastro de conta para um cliente\n");
+        cadastrarConta();
         break;
     case 'L':
     case 'l':
@@ -111,7 +122,7 @@ void gerenciarContas()
         break;
     default:
         printf("Digite uma opcao valida.\n");
-        gerenciarContas();
+        menuContas();
     }
     return 0;
 }
@@ -122,10 +133,127 @@ void sair()
     return 0;
 }
 
+void cadastrarClienteNoVetor(T_Cliente *clientes, int tamanho, T_Cliente cliente)
+{
+    if(totalClientesCadastrados >= tamanho)
+    {
+        clientes = realloc(clientes, tamanho+1);
+    }
+    clientes[totalClientesCadastrados] = cliente;
+    totalClientesCadastrados++;
+}
+
+listarTodosClientes()
+{
+    FILE * arquivocliente;
+    char linha [5000];
+    int i;
+
+    arquivocliente = fopen ("CadastroCliente.txt", "r+");
+    if (arquivocliente == NULL) perror ("Deu penis ao abrir arquivo");
+    else
+    {
+        while(!feof(arquivocliente)){
+            fgets(linha, 5000, arquivocliente);
+            printf("%s", linha);
+        }
+        printf("\n\n");
+        fclose (arquivocliente);
+    }
+    menuClientes();
+}
+
+
+void cadastrarCliente()
+{
+    FILE *arquivocliente;
+    srand(time(NULL));
+    int i=1;
+    int numeroClientes = 0;
+
+    arquivocliente = fopen("CadastroCliente.txt","a+");
+
+    printf ("\n===== CADASTRO DE CLIENTES ===== \n");
+    printf ("\nQuantos clientes deseja cadastrar? ");
+    scanf ("%d", &numeroClientes);
+
+    if(arquivocliente != NULL)
+    {
+        for (i=1; i<=numeroClientes; i++)
+        {
+
+            clientes[i].codigoCliente = rand()%100000;
+            printf ("NOME: ");
+            scanf(" %[^\n]s",clientes[i].nome);
+            printf ("CPF: ");
+            scanf (" %[^\n]s",clientes[i].cpfcnpj);
+            printf ("TELEFONE: ");
+            scanf (" %[^\n]s", clientes[i].telefone);
+            printf ("ENDERECO\n");
+            printf ("Logradouro: ");
+            scanf (" %[^\n]s", clientes[i].endereco.logradouro);
+            printf ("Complemento: ");
+            scanf (" %[^\n]s", clientes[i].endereco.complemento);
+            printf ("CEP: ");
+            scanf (" %[^\n]s", clientes[i].endereco.cep);
+            printf ("BAIRRO: ");
+            scanf (" %[^\n]s", clientes[i].endereco.bairro);
+            printf ("CIDADE: ");
+            scanf (" %[^\n]s", clientes[i].endereco.cidade);
+            printf ("ESTADO(UF): ");
+            scanf (" %[^\n]s", clientes[i].endereco.estado);
+
+            fprintf(arquivocliente, "CODIGO: %d; NOME: %s;CPF: %s;TELEFONE: %s;Logradouro: %s;Complemento: %s;CEP: %s;BAIRRO: %s;CIDADE: %s;ESTADO(UF): %s;\n",
+                    clientes[i].codigoCliente, clientes[i].nome, clientes[i].cpfcnpj, clientes[i].telefone, clientes[i].endereco.logradouro,
+                    clientes[i].endereco.complemento, clientes[i].endereco.cep, clientes[i].endereco.bairro, clientes[i].endereco.cidade,
+                    clientes[i].endereco.estado);
+
+            printf ("\n*-- Cliente cadastrado com sucesso !!!--*\n\n");
+        }
+    }
+    else
+    {
+        printf("Falha ao salvar cliente\n");
+    }
+
+    fclose(arquivocliente);
+
+
+}
+
+void cadastrarConta()
+{
+    FILE *arquivoconta;
+    srand(time(NULL));
+    int i=1;
+    int numeroContas = 0;
+
+    arquivoconta = fopen("CadastroConta.txt","a+");
+
+    printf ("\n===== CADASTRO DE CONTAS ===== \n");
+    printf ("\nQuantas contas deseja cadastrar? ");
+    scanf ("%d", &numeroContas);
+
+    for (i=1; i<=numeroContas; i++)
+    {
+
+        contas[i].codigoConta = rand()%100000;
+        printf ("AGENCIA: ");
+        scanf("%d", contas[i].agencia);
+        printf ("SALDO: ");
+        scanf("%f", contas[i].saldo);
+
+        fprintf(arquivoconta, "AGENCIA: %d; CODIGO DA CONTA: %d;SALDO: %f;\n",
+                contas[i].agencia,contas[i].codigoConta, contas[i].saldo);
+    }
+    fclose(arquivoconta);
+    printf ("\n*-- Conta cadastrada com sucesso !!!--*\n\n");
+
+}
 
 int main()
 {
-    char opcaoMenu='X';
+    char opcaoMenu;
 
     do
     {
@@ -141,12 +269,12 @@ int main()
         case 'C':
         case 'c':
             system("cls");
-            gerenciarClientes();
+            menuClientes();
             break;
         case 'T':
         case 't':
             system("cls");
-            gerenciarContas();
+            menuContas();
             break;
         case 'S':
         case 's':

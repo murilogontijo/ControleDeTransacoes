@@ -2,6 +2,21 @@
 1510342249 source:c:\users\murilo gontijo\dropbox\ufg\pogramacao imperativa\pi-trabalhopratico\main.c
 	<stdio.h>
 
-1510876670 source:c:\users\murilo\documents\github\controledetransacoes\main.c
+1510967439 source:c:\users\murilo\documents\github\controledetransacoes\main.c
 	<stdio.h>
+	"main.h"
+	<string.h>
+	<stdlib.h>
+	<time.h>
+
+1510967239 c:\users\murilo\documents\github\controledetransacoes\main.h
+
+1511213252 source:c:\users\murilo gontijo\dropbox\ufg\programacao imperativa\controledetransacoes\main.c
+	<stdio.h>
+	"main.h"
+	<string.h>
+	<stdlib.h>
+	<time.h>
+
+1511206200 c:\users\murilo gontijo\dropbox\ufg\programacao imperativa\controledetransacoes\main.h
 

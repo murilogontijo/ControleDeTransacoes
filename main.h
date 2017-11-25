@@ -1,27 +1,29 @@
 void sair();
-void gerenciarClientes();
-void gerenciarContas();
+void menuClientes();
+void menuContas();
+void cadastrarCliente();
+listarTodosClientes();
 
-typedef struct Endereco{
-    char logradouro[50];
-    char complemento[50];
-    int cep;
-    char bairro[50];
-    char cidade[50];
+typedef struct endereco{
+    char logradouro[100];
+    char complemento[100];
+    char cep[8];
+    char bairro[100];
+    char cidade[100];
     char estado[2];
 }T_Endereco;
 
-typedef struct Cliente{
-    int codigo;
-    char nome[50];
-    int cpfcnpj;
-    int telefone;
+typedef struct cliente{
+    int codigoCliente;
+    char nome[100];
+    char cpfcnpj[14];
+    char telefone[20];
     T_Endereco endereco;
-}T_Cliente;
+} T_Cliente;
 
 typedef struct Conta{
     int agencia;
-    int codigo;
-    T_Cliente cliente;
+    int codigoConta;
+    int codigoCliente;
     double saldo;
 }T_Conta;
